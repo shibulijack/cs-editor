@@ -3,28 +3,14 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
 import Fab from "@material-ui/core/Fab";
-import MenuIcon from "@material-ui/icons/Menu";
-import PlayIcon from "@material-ui/icons/PlayArrow";
-import SearchIcon from "@material-ui/icons/Search";
-import MoreIcon from "@material-ui/icons/MoreVert";
+import StarIcon from "@material-ui/icons/StarRounded";
+import PlayIcon from "@material-ui/icons/PlayArrowRounded";
+import ClearIcon from "@material-ui/icons/ClearRounded";
+import classNames from "classnames";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
-  text: {
-    paddingTop: theme.spacing.unit * 2,
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2
-  },
-  paper: {
-    paddingBottom: 50
-  },
-  list: {
-    marginBottom: theme.spacing.unit * 2
-  },
-  subHeader: {
-    backgroundColor: theme.palette.background.paper
-  },
   appBar: {
     top: "auto",
     bottom: 0
@@ -40,6 +26,18 @@ const styles = theme => ({
     left: 0,
     right: 0,
     margin: "0 auto"
+  },
+  button: {
+    margin: theme.spacing.unit
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit
+  },
+  iconSmall: {
+    fontSize: 16
   }
 });
 
@@ -48,9 +46,18 @@ function CSActionBar(props) {
   return (
     <AppBar position="fixed" color="primary" className={classes.appBar}>
       <Toolbar className={classes.toolbar} variant="dense">
-        <IconButton color="inherit" aria-label="Open drawer">
-          <MenuIcon />
-        </IconButton>
+        <Button
+          href="https://github.com/shibulijack/cs-editor"
+          target="_blank"
+          color="default"
+          size="small"
+          aria-label="Open drawer"
+        >
+          <StarIcon
+            className={classNames(classes.leftIcon, classes.iconSmall)}
+          />
+          Github
+        </Button>
         <Fab
           color="secondary"
           aria-label="Add"
@@ -60,12 +67,18 @@ function CSActionBar(props) {
           <PlayIcon />
         </Fab>
         <div>
-          <IconButton color="inherit">
-            <SearchIcon />
-          </IconButton>
-          <IconButton color="inherit">
-            <MoreIcon />
-          </IconButton>
+          <Button
+            variant="outlined"
+            color="default"
+            size="small"
+            className={classes.button}
+            onClick={props.onClearConsole}
+          >
+            <ClearIcon
+              className={classNames(classes.leftIcon, classes.iconSmall)}
+            />
+            Clear console
+          </Button>
         </div>
       </Toolbar>
     </AppBar>

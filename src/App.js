@@ -84,6 +84,12 @@ class App extends Component {
     }
   }
 
+  clearConsole() {
+    this.setState({
+      outputValue: []
+    });
+  }
+
   handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -109,7 +115,10 @@ class App extends Component {
             <CSOutput outputValue={outputValue} />
           </Grid>
         </Grid>
-        <CSActionBar onFabClick={e => this.runCode(lastSavedValue, e)} />
+        <CSActionBar
+          onFabClick={e => this.runCode(lastSavedValue, e)}
+          onClearConsole={e => this.clearConsole(e)}
+        />
         <Snackbar
           anchorOrigin={{
             vertical: "top",

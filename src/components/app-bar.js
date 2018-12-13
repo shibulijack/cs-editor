@@ -24,7 +24,9 @@ function CSAppBar(props) {
           <Typography variant="h6" color="inherit" className={classes.grow}>
             CS Editor
           </Typography>
-          <Button color="inherit">LOGIN</Button>
+          <Button disabled color="inherit">
+            LOGIN
+          </Button>
         </Toolbar>
       </AppBar>
     </div>
