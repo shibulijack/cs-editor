@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Fab from "@material-ui/core/Fab";
-import StarIcon from "@material-ui/icons/StarRounded";
+import StarIcon from "@material-ui/icons/OpenInNewRounded";
 import PlayIcon from "@material-ui/icons/PlayArrowRounded";
 import ClearIcon from "@material-ui/icons/ClearRounded";
 import classNames from "classnames";

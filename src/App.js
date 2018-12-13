@@ -39,14 +39,20 @@ const theme = createMuiTheme({
   }
 });
 
+const EMPTY_STATE = "n/a";
+
 class App extends Component {
   constructor(props) {
     super(props);
-    let editorData = `//Sample Javascript function\n\nfunction sum(a, b)\n{\n\treturn a + b;\n}\n\nsum(1,2);`;
+    let editorData = `//Sample Javascript function\n\nfunction sum(a, b)\n{\n\tconsole.log(a,b);\n\treturn a + b;\n}\n\nsum(1,2);`;
     this.state = {
       editorValue: editorData,
       lastSavedValue: editorData,
-      outputValue: [],
+      outputValue: {
+        data: EMPTY_STATE,
+        error: false
+      },
+      consoleData: [],
       snackbarOpen: false
     };
     this.handleEditorChange = this.handleEditorChange.bind(this);
@@ -62,32 +68,53 @@ class App extends Component {
   runCode(code) {
     debugger;
     try {
+      this.captureConsole();
       // eslint-disable-next-line
       let userFunctionValue = (0, eval)(code);
 
       if (userFunctionValue) {
         this.setState(state => ({
-          outputValue: [
-            ...state.outputValue,
-            { message: userFunctionValue, error: null }
-          ]
+          outputValue: { data: userFunctionValue, error: false }
         }));
       }
     } catch (e) {
       this.setState(state => ({
         snackbarOpen: true,
-        outputValue: [
-          ...state.outputValue,
-          { message: e.message, error: e.stack }
-        ]
+        outputValue: { data: e.message, error: true },
+        consoleData: [...state.consoleData, { message: e.stack, type: "error" }]
       }));
     }
   }
 
   clearConsole() {
     this.setState({
-      outputValue: []
+      consoleData: []
     });
+  }
+
+  captureConsole() {
+    let original = window.console;
+    let _self = this;
+    window.console = {
+      log: function() {
+        debugger;
+        let arg = [...arguments];
+        _self.setState(state => ({
+          consoleData: [
+            ...state.consoleData,
+            { message: arg.toString(), type: "log" }
+          ]
+        }));
+      },
+      warn: function() {
+        // do sneaky stuff
+        original.warn.apply(original, arguments);
+      },
+      error: function() {
+        // do sneaky stuff
+        original.error.apply(original, arguments);
+      }
+    };
   }
 
   handleClose = (event, reason) => {
@@ -99,7 +126,12 @@ class App extends Component {
   };
 
   render() {
-    const { editorValue, lastSavedValue, outputValue } = this.state;
+    const {
+      editorValue,
+      lastSavedValue,
+      outputValue,
+      consoleData
+    } = this.state;
     return (
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
@@ -112,7 +144,7 @@ class App extends Component {
             />
           </Grid>
           <Grid item xs={6}>
-            <CSOutput outputValue={outputValue} />
+            <CSOutput outputValue={outputValue} consoleData={consoleData} />
           </Grid>
         </Grid>
         <CSActionBar
