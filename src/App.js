@@ -7,10 +7,9 @@ import CSAppBar from "./components/app-bar";
 import CSEditor from "./components/editor";
 import CSOutput from "./components/output";
 import CSSnackbar from "./components/snackbar";
+import CSActionBar from "./components/action-bar";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Fab from "@material-ui/core/Fab";
-import PlayIcon from "@material-ui/icons/PlayArrow";
 import Snackbar from "@material-ui/core/Snackbar";
 
 const theme = createMuiTheme({
@@ -37,16 +36,6 @@ const theme = createMuiTheme({
       '"Segoe UI Symbol"'
     ].join(","),
     useNextVariants: true
-  },
-  overrides: {
-    MuiFab: {
-      root: {
-        color: "white",
-        position: "absolute",
-        bottom: "1rem",
-        right: "1rem"
-      }
-    }
   }
 });
 
@@ -120,10 +109,11 @@ class App extends Component {
             <CSOutput outputValue={outputValue} />
           </Grid>
         </Grid>
+        <CSActionBar onFabClick={e => this.runCode(lastSavedValue, e)} />
         <Snackbar
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
+            vertical: "top",
+            horizontal: "right"
           }}
           open={this.state.snackbarOpen}
           autoHideDuration={6000}
@@ -135,13 +125,6 @@ class App extends Component {
             message="Run time error"
           />
         </Snackbar>
-        <Fab
-          color="secondary"
-          aria-label="Run"
-          onClick={e => this.runCode(lastSavedValue, e)}
-        >
-          <PlayIcon />
-        </Fab>
       </MuiThemeProvider>
     );
   }
