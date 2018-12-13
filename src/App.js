@@ -14,6 +14,9 @@ import CSActionBar from "./components/action-bar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Snackbar from "@material-ui/core/Snackbar";
 
+const DEFAULT_CODE = `//Sample Javascript function\n\nfunction sum(a, b)\n{\n\tconsole.log(a,b);\n\treturn a + b;\n}\n\nsum(1,2);`;
+const EMPTY_STATE = "n/a";
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -41,15 +44,12 @@ const theme = createMuiTheme({
   }
 });
 
-const EMPTY_STATE = "n/a";
-
 class App extends Component {
   constructor(props) {
     super(props);
-    let editorData = `//Sample Javascript function\n\nfunction sum(a, b)\n{\n\tconsole.log(a,b);\n\treturn a + b;\n}\n\nsum(1,2);`;
     this.state = {
-      editorValue: editorData,
-      lastSavedValue: editorData,
+      editorValue: DEFAULT_CODE,
+      lastSavedValue: DEFAULT_CODE,
       outputValue: {
         data: EMPTY_STATE,
         error: false
@@ -57,7 +57,7 @@ class App extends Component {
       consoleData: [],
       snackbarOpen: false
     };
-    this.handleEditorChange = this.handleEditorChange.bind(this);
+    this.captureConsole();
   }
 
   handleEditorChange(editor) {
@@ -69,7 +69,6 @@ class App extends Component {
 
   runCode(code) {
     try {
-      this.captureConsole();
       // eslint-disable-next-line
       let userFunctionValue = (0, eval)(code);
 
@@ -103,11 +102,11 @@ class App extends Component {
       },
       warn: function() {
         let arg = [...arguments];
-        _self._setConsoleData(arg.toString(), "warning");
+        _self._setConsoleData(Util.customPrint(arg), "warning");
       },
       error: function() {
         let arg = [...arguments];
-        this._setConsoleData(arg.toString(), "error");
+        this._setConsoleData(Util.customPrint(arg), "error");
       }
     };
   }
@@ -147,7 +146,7 @@ class App extends Component {
           <Grid item xs={6}>
             <CSEditor
               editorValue={editorValue}
-              onEditorChange={this.handleEditorChange}
+              onEditorChange={e => this.handleEditorChange(e)}
               onRunCode={e => this.runCode(lastSavedValue, e)}
             />
           </Grid>
