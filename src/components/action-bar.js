@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Chip from "@material-ui/core/Chip";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Fab from "@material-ui/core/Fab";
-import StarIcon from "@material-ui/icons/OpenInNewRounded";
 import PlayIcon from "@material-ui/icons/PlayArrowRounded";
 import ClearIcon from "@material-ui/icons/ClearRounded";
 import classNames from "classnames";
@@ -38,6 +39,11 @@ const styles = theme => ({
   },
   iconSmall: {
     fontSize: 16
+  },
+  chip: {
+    fontWeight: 600,
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   }
 });
 
@@ -46,18 +52,16 @@ function CSActionBar(props) {
   return (
     <AppBar position="fixed" color="primary" className={classes.appBar}>
       <Toolbar className={classes.toolbar} variant="dense">
-        <Button
-          href="https://github.com/shibulijack/cs-editor"
-          target="_blank"
-          color="default"
-          size="small"
-          aria-label="Open drawer"
-        >
-          <StarIcon
-            className={classNames(classes.leftIcon, classes.iconSmall)}
-          />
-          Github
-        </Button>
+        <Typography variant="overline" color="textSecondary">
+          Press{" "}
+          <Chip
+            label="Ctrl + Space"
+            className={classes.chip}
+            variant="outlined"
+          />{" "}
+          to execute the code.
+        </Typography>
+
         <Fab
           color="secondary"
           aria-label="Add"

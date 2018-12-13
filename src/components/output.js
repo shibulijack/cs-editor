@@ -1,58 +1,66 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
+import * as Util from "../util";
 
+import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Divider from "@material-ui/core/Divider";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
 import InfoIcon from "@material-ui/icons/InfoRounded";
+import ErrorIcon from "@material-ui/icons/ErrorRounded";
 
 const styles = theme => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
-  },
   dense: {
     marginTop: 16
-  },
-  menu: {
-    width: 200
   },
   card: {
     minWidth: 275,
     margin: "1.5rem"
+  },
+  hr: {
+    backgroundColor: "#202124"
+  },
+  log: {
+    marginTop: "0.5rem",
+    fontSize: "2rem"
+  },
+  info: {
+    fill: theme.palette.primary.light
+  },
+  error: {
+    fill: theme.palette.error.dark
   }
 });
 
 class CSOutput extends React.PureComponent {
   render() {
     const { outputValue, consoleData, classes } = this.props;
-    debugger;
     const consoleItems =
       consoleData.length > 0 &&
-      consoleData.map((console, index) => (
-        <ListItem alignItems="flex-start" key={index}>
-          <ListItemAvatar>
-            <Avatar>
-              <InfoIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primary={`${JSON.stringify(console.message, null, 2)}`}
-            secondary={console.type ? `console.${console.type}` : null}
-          />
-        </ListItem>
+      consoleData.map(console => (
+        <React.Fragment key={console.id}>
+          <ListItem alignItems="flex-start">
+            {console.type === "log" ? (
+              <InfoIcon className={classNames(classes.log, classes.info)} />
+            ) : (
+              <ErrorIcon className={classNames(classes.log, classes.error)} />
+            )}
+            <ListItemText
+              primary={Util.safePrint(console.message)}
+              secondary={console.type ? `console.${console.type}` : null}
+            />
+          </ListItem>
+          <Divider className={classes.hr} />
+        </React.Fragment>
       ));
-
+    const consoleLog = consoleData.length > 0 && (
+      <List component="ul">{consoleItems}</List>
+    );
     return (
       <div className="log-wrapper">
         <Card className={classes.card}>
@@ -65,11 +73,11 @@ class CSOutput extends React.PureComponent {
               Output
             </Typography>
             <Typography variant="h5" component="h2">
-              {outputValue && `${JSON.stringify(outputValue.data, null, 2)}`}
+              {outputValue && Util.safePrint(outputValue.data)}
             </Typography>
           </CardContent>
         </Card>
-        <List component="ul">{consoleItems}</List>
+        {consoleLog}
       </div>
     );
   }

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import * as Util from "./util";
+import "./App.css";
+
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import "./App.css";
 
 import CSAppBar from "./components/app-bar";
 import CSEditor from "./components/editor";
@@ -66,7 +68,6 @@ class App extends Component {
   }
 
   runCode(code) {
-    debugger;
     try {
       this.captureConsole();
       // eslint-disable-next-line
@@ -80,9 +81,9 @@ class App extends Component {
     } catch (e) {
       this.setState(state => ({
         snackbarOpen: true,
-        outputValue: { data: e.message, error: true },
-        consoleData: [...state.consoleData, { message: e.stack, type: "error" }]
+        outputValue: { data: e.message, error: true }
       }));
+      this._setConsoleData(e.stack, "error");
     }
   }
 
@@ -93,26 +94,20 @@ class App extends Component {
   }
 
   captureConsole() {
-    let original = window.console;
+    // let original = window.console;
     let _self = this;
     window.console = {
       log: function() {
-        debugger;
         let arg = [...arguments];
-        _self.setState(state => ({
-          consoleData: [
-            ...state.consoleData,
-            { message: arg.toString(), type: "log" }
-          ]
-        }));
+        _self._setConsoleData(Util.customPrint(arg));
       },
       warn: function() {
-        // do sneaky stuff
-        original.warn.apply(original, arguments);
+        let arg = [...arguments];
+        _self._setConsoleData(arg.toString(), "warning");
       },
       error: function() {
-        // do sneaky stuff
-        original.error.apply(original, arguments);
+        let arg = [...arguments];
+        this._setConsoleData(arg.toString(), "error");
       }
     };
   }
@@ -121,9 +116,21 @@ class App extends Component {
     if (reason === "clickaway") {
       return;
     }
-
     this.setState({ snackbarOpen: false });
   };
+
+  _setConsoleData(message, type = "log") {
+    this.setState(state => ({
+      consoleData: [
+        ...state.consoleData,
+        {
+          id: state.consoleData.length,
+          message: message,
+          type: type
+        }
+      ]
+    }));
+  }
 
   render() {
     const {
@@ -141,6 +148,7 @@ class App extends Component {
             <CSEditor
               editorValue={editorValue}
               onEditorChange={this.handleEditorChange}
+              onRunCode={e => this.runCode(lastSavedValue, e)}
             />
           </Grid>
           <Grid item xs={6}>

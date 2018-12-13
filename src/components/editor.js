@@ -9,6 +9,9 @@ const styles = theme => ({
   container: {
     display: "flex",
     flexWrap: "wrap"
+  },
+  cm: {
+    fontSize: "1.1rem"
   }
 });
 
@@ -20,10 +23,18 @@ class CSEditor extends React.Component {
       <form className={classes.container} noValidate autoComplete="off">
         <CodeMirror
           value={editorValue}
+          className={classes.cm}
           options={{
             mode: "javascript",
             theme: "base16-dark",
-            lineNumbers: true
+            extraKeys: {
+              "Ctrl-Space": cm => this.props.onRunCode(cm.getValue())
+            },
+            autofocus: true,
+            lineNumbers: true,
+            indentUnit: 2,
+            indentWithTabs: true,
+            tabSize: 2
           }}
           onChange={(editor, data, value) => this.props.onEditorChange(editor)}
         />
