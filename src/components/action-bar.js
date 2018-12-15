@@ -10,6 +10,7 @@ import PlayIcon from "@material-ui/icons/PlayArrowRounded";
 import ClearIcon from "@material-ui/icons/ClearRounded";
 import classNames from "classnames";
 import Button from "@material-ui/core/Button";
+import Hidden from "@material-ui/core/Hidden";
 
 const styles = theme => ({
   appBar: {
@@ -52,16 +53,17 @@ function CSActionBar(props) {
   return (
     <AppBar position="fixed" color="primary" className={classes.appBar}>
       <Toolbar className={classes.toolbar} variant="dense">
-        <Typography variant="overline" color="textSecondary">
-          Press{" "}
-          <Chip
-            label="Ctrl + Space"
-            className={classes.chip}
-            variant="outlined"
-          />{" "}
-          to execute the code.
-        </Typography>
-
+        <Hidden mdDown>
+          <Typography variant="overline" color="textSecondary">
+            Press{" "}
+            <Chip
+              label="Ctrl + Space"
+              className={classes.chip}
+              variant="outlined"
+            />{" "}
+            to execute the code.
+          </Typography>
+        </Hidden>
         <Fab
           color="secondary"
           aria-label="Add"

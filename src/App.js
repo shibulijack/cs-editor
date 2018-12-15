@@ -143,14 +143,14 @@ class App extends Component {
         <CssBaseline />
         <CSAppBar />
         <Grid container spacing={0}>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
             <CSEditor
               editorValue={editorValue}
               onEditorChange={e => this.handleEditorChange(e)}
               onRunCode={e => this.runCode(lastSavedValue, e)}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
             <CSOutput outputValue={outputValue} consoleData={consoleData} />
           </Grid>
         </Grid>
