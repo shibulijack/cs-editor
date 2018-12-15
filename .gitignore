@@ -2,6 +2,9 @@
 node_modules/
 jspm_packages/
 
+# Build
+build/
+
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
@@ -18,3 +21,4 @@ yarn-error.log*
 .DS_Store
 .AppleDouble
 .LSOverride
+.firebase
