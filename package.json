@@ -2,6 +2,7 @@
   "name": "cs-editor",
   "version": "0.2.0",
   "private": true,
+  "homepage": "https://shibulijack.github.io/cs-editor",
   "dependencies": {
     "@material-ui/core": "3.6.2",
     "@material-ui/icons": "3.0.1",
@@ -16,7 +17,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "react-scripts build && firebase deploy"
+    "firebase-deploy": "react-scripts build && firebase deploy",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -26,5 +29,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
+  }
 }
