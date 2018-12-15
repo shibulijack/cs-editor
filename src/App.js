@@ -63,7 +63,7 @@ class App extends Component {
     Util.captureConsole();
     window.addEventListener("message", e => {
       let { data, type } = e.data;
-      if (e.isTrusted && data) {
+      if (e.origin === process.env.REACT_APP_ROOT_URL && data) {
         this.setState(state => ({
           consoleData: [
             ...state.consoleData,

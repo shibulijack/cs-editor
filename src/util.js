@@ -27,22 +27,31 @@ export function safePrint(data) {
 export function captureConsole() {
   window.console = {
     log: function() {
-      window.postMessage({
-        data: [...arguments],
-        type: "log"
-      });
+      window.postMessage(
+        {
+          data: [...arguments],
+          type: "log"
+        },
+        process.env.REACT_APP_ROOT_URL
+      );
     },
     warn: function() {
-      window.postMessage({
-        data: [...arguments],
-        type: "warn"
-      });
+      window.postMessage(
+        {
+          data: [...arguments],
+          type: "warn"
+        },
+        process.env.REACT_APP_ROOT_URL
+      );
     },
     error: function() {
-      window.postMessage({
-        data: [...arguments],
-        type: "error"
-      });
+      window.postMessage(
+        {
+          data: [...arguments],
+          type: "error"
+        },
+        process.env.REACT_APP_ROOT_URL
+      );
     }
   };
 }
