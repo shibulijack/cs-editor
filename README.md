@@ -1,4 +1,6 @@
-A very simple JS editor built using [React](https://reactjs.org/).
+# CS Editor
+
+Clean & Simple JS editor built using [React](https://reactjs.org/).
 
 ## Why?
 
