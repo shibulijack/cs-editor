@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import * as Util from "./util";
 import "./App.css";
+import * as Util from "./util";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -57,7 +57,29 @@ class App extends Component {
       consoleData: [],
       snackbarOpen: false
     };
-    this.captureConsole();
+  }
+
+  componentDidMount() {
+    Util.captureConsole();
+    window.addEventListener("message", e => {
+      let { data, type } = e.data;
+      if (e.isTrusted && data) {
+        this.setState(state => ({
+          consoleData: [
+            ...state.consoleData,
+            {
+              id: state.consoleData.length,
+              message: data,
+              type: type
+            }
+          ]
+        }));
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("message");
   }
 
   handleEditorChange(editor) {
@@ -90,25 +112,6 @@ class App extends Component {
     this.setState({
       consoleData: []
     });
-  }
-
-  captureConsole() {
-    // let original = window.console;
-    let _self = this;
-    window.console = {
-      log: function() {
-        let arg = [...arguments];
-        _self._setConsoleData(Util.customPrint(arg));
-      },
-      warn: function() {
-        let arg = [...arguments];
-        _self._setConsoleData(Util.customPrint(arg), "warning");
-      },
-      error: function() {
-        let arg = [...arguments];
-        this._setConsoleData(Util.customPrint(arg), "error");
-      }
-    };
   }
 
   handleClose = (event, reason) => {

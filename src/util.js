@@ -1,26 +1,48 @@
-function isObject(obj) {
+function _isObject(obj) {
   return obj && typeof obj === "object";
 }
 
-export function safePrint(data) {
-  if (isObject(data)) {
-    return `${JSON.stringify(data, null, 2)}`;
+function _safePrint(element) {
+  if (_isObject(element)) {
+    return `${JSON.stringify(element, null, 2)}`;
+  } else if (Array.isArray(element)) {
+    return element.toString();
+  } else {
+    return element;
   }
-  return data;
 }
 
-export function customPrint(data) {
-  let returnStr = "";
+export function safePrint(data) {
+  let returnData = [];
   if (data && Array.isArray(data)) {
     for (let element of data) {
-      if (isObject(element)) {
-        returnStr += `${JSON.stringify(element, null, 2)}`;
-      } else if (Array.isArray(element)) {
-        returnStr += element.toString();
-      } else {
-        returnStr += element;
-      }
+      returnData.push(_safePrint(element));
     }
+  } else {
+    returnData.push(_safePrint(data));
   }
-  return returnStr;
+  return returnData.join(", ");
+}
+
+export function captureConsole() {
+  window.console = {
+    log: function() {
+      window.postMessage({
+        data: [...arguments],
+        type: "log"
+      });
+    },
+    warn: function() {
+      window.postMessage({
+        data: [...arguments],
+        type: "warn"
+      });
+    },
+    error: function() {
+      window.postMessage({
+        data: [...arguments],
+        type: "error"
+      });
+    }
+  };
 }
