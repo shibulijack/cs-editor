@@ -30,26 +30,28 @@ class Editor extends Component {
 
   componentDidMount() {
     Util.captureConsole();
-    window.addEventListener("message", e => {
-      let { data, type } = e.data;
-      if (e.origin === process.env.REACT_APP_ROOT_URL && data) {
-        this.setState(state => ({
-          consoleData: [
-            ...state.consoleData,
-            {
-              id: state.consoleData.length,
-              message: data,
-              type: type
-            }
-          ]
-        }));
-      }
-    });
+    window.addEventListener("message", this.getMessage);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("message");
+    window.removeEventListener("message", this.getMessage);
   }
+
+  getMessage = e => {
+    let { data, type } = e.data;
+    if (e.origin === process.env.REACT_APP_ROOT_URL && data) {
+      this.setState(state => ({
+        consoleData: [
+          ...state.consoleData,
+          {
+            id: state.consoleData.length,
+            message: data,
+            type: type
+          }
+        ]
+      }));
+    }
+  };
 
   handleEditorChange(editor) {
     let value = editor.getValue();

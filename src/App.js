@@ -1,6 +1,6 @@
 import React from "react";
 import Loadable from "react-loadable";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import * as ROUTES from "./constants/routes";
 
 import "./App.css";
@@ -12,6 +12,11 @@ import Loader from "./components/loader";
 
 const EditorPage = Loadable({
   loader: () => import("./pages/editor"),
+  loading: Loader
+});
+
+const LoginPage = Loadable({
+  loader: () => import("./pages/login"),
   loading: Loader
 });
 
@@ -44,11 +49,11 @@ const theme = createMuiTheme({
 const App = () => (
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
-    <CSAppBar />
     <Router>
       <div>
-        <Redirect from={ROUTES.LANDING} to={ROUTES.EDITOR} />
+        <CSAppBar />
         <Route exact path={ROUTES.EDITOR} component={EditorPage} />
+        <Route exact path={ROUTES.LOGIN} component={LoginPage} />
       </div>
     </Router>
   </MuiThemeProvider>

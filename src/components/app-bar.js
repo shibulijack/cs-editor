@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
@@ -6,8 +7,11 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import CodeIcon from "@material-ui/icons/CodeRounded";
 import OpenIcon from "@material-ui/icons/OpenInNewRounded";
+
+import * as ROUTES from "../constants/routes";
 
 const styles = theme => ({
   root: {
@@ -33,12 +37,17 @@ function CSAppBar(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar variant="dense">
-          <CodeIcon className={classes.leftIcon} />
+          <IconButton aria-label="Home" component={Link} to={ROUTES.LANDING}>
+            <CodeIcon />
+          </IconButton>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             CS Editor
           </Typography>
-          <Button disabled color="inherit">
+          <Button color="inherit" component={Link} to={ROUTES.LOGIN}>
             LOGIN
+          </Button>
+          <Button color="inherit" component={Link} to={ROUTES.EDITOR}>
+            EDITOR
           </Button>
           <Button
             href="https://github.com/shibulijack/cs-editor"
