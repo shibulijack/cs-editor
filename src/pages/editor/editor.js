@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { UnControlled as CodeMirror } from "react-codemirror2";
 
-require("../../node_modules/codemirror/mode/javascript/javascript");
+require("../../../node_modules/codemirror/mode/javascript/javascript");
 
 const styles = theme => ({
   container: {

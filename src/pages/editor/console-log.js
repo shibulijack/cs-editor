@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import * as Util from "../util";
+import * as Util from "../../util";
 
 import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
