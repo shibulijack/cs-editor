@@ -6,6 +6,7 @@
     "@material-ui/core": "3.6.2",
     "@material-ui/icons": "3.0.1",
     "codemirror": "5.42.0",
+    "firebase": "^5.7.1",
     "react": "16.6.3",
     "react-codemirror2": "5.1.0",
     "react-dom": "16.6.3",

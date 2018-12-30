@@ -22,6 +22,7 @@ import IconButton from "@material-ui/core/IconButton";
 import * as ROUTES from "../../constants/routes";
 
 const INITIAL_STATE = {
+  username: "",
   email: "",
   password: "",
   error: null
@@ -49,7 +50,7 @@ const styles = theme => ({
   }
 });
 
-class LoginForm extends Component {
+class SignupForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,9 +70,18 @@ class LoginForm extends Component {
   };
 
   handleSubmit = event => {
-    const { email, password } = this.state;
+    const { username, email, password } = this.state;
     this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
+      .doCreateUserWithEmailAndPassword(email, password)
+      .then(authUser => {
+        return this.props.firebase.user(authUser.user.uid).set({
+          username,
+          email
+        });
+      })
+      // .then(() => {
+      //   return this.props.firebase.doSendEmailVerification();
+      // })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.EDITOR);
@@ -84,8 +94,8 @@ class LoginForm extends Component {
 
   render() {
     const { classes } = this.props;
-    const { email, password } = this.state;
-    const isInvalid = password === "" || email === "";
+    const { username, email, password } = this.state;
+    const isInvalid = username === "" || password === "" || email === "";
     const ErrorMsg = () => (
       <Snackbar
         anchorOrigin={{
@@ -115,12 +125,12 @@ class LoginForm extends Component {
         <Grid item xs={12} zeroMinWidth className={classes.grid}>
           <Card className={classes.card} raised>
             <CardHeader
-              title="Login"
+              title="Signup"
               className={classes.cardHeader}
               subheader={
                 <Typography variant="caption">
-                  To create a new account,{" "}
-                  <Link to={ROUTES.SIGNUP}>click here.</Link>
+                  If you already have an account,{" "}
+                  <Link to={ROUTES.LOGIN}>click here.</Link>
                 </Typography>
               }
             />
@@ -131,6 +141,17 @@ class LoginForm extends Component {
                 noValidate
                 autoComplete="off"
               >
+                <TextField
+                  id="name"
+                  label="Name"
+                  className={classes.textField}
+                  value={this.state.username}
+                  onChange={this.handleChange("username")}
+                  margin="normal"
+                  variant="filled"
+                  fullWidth
+                />
+
                 <TextField
                   id="email"
                   label="Email"
@@ -179,7 +200,7 @@ class LoginForm extends Component {
                   disabled={isInvalid}
                   fullWidth
                 >
-                  Login
+                  Signup
                 </Button>
               </form>
             </CardContent>
@@ -191,10 +212,10 @@ class LoginForm extends Component {
   }
 }
 
-const LoginPage = compose(
+const SignupPage = compose(
   withRouter,
   withFirebase,
   withStyles(styles)
-)(LoginForm);
+)(SignupForm);
 
-export default LoginPage;
+export default SignupPage;

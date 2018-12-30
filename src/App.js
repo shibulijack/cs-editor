@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Component } from "react";
 import Loadable from "react-loadable";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import * as ROUTES from "./constants/routes";
-
+import { withFirebase } from "./components/firebase";
 import "./App.css";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,6 +17,11 @@ const EditorPage = Loadable({
 
 const LoginPage = Loadable({
   loader: () => import("./pages/login"),
+  loading: Loader
+});
+
+const SignupPage = Loadable({
+  loader: () => import("./pages/signup"),
   loading: Loader
 });
 
@@ -46,17 +51,41 @@ const theme = createMuiTheme({
   }
 });
 
-const App = () => (
-  <MuiThemeProvider theme={theme}>
-    <CssBaseline />
-    <Router>
-      <div>
-        <CSAppBar />
-        <Route exact path={ROUTES.EDITOR} component={EditorPage} />
-        <Route exact path={ROUTES.LOGIN} component={LoginPage} />
-      </div>
-    </Router>
-  </MuiThemeProvider>
-);
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      authUser: null
+    };
+  }
 
-export default App;
+  componentDidMount() {
+    this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
+      authUser
+        ? this.setState({ authUser })
+        : this.setState({ authUser: null });
+    });
+  }
+
+  componentWillUnmount() {
+    this.listener();
+  }
+
+  render() {
+    return (
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <React.Fragment>
+            <CSAppBar authUser={this.state.authUser} />
+            <Route exact path={ROUTES.EDITOR} component={EditorPage} />
+            <Route exact path={ROUTES.LOGIN} component={LoginPage} />
+            <Route exact path={ROUTES.SIGNUP} component={SignupPage} />
+          </React.Fragment>
+        </Router>
+      </MuiThemeProvider>
+    );
+  }
+}
+
+export default withFirebase(App);
