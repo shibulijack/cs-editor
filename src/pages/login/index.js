@@ -114,7 +114,9 @@ class LoginForm extends Component {
               subheader={
                 <Typography variant="caption">
                   To create a new account,{" "}
-                  <Link to={ROUTES.SIGNUP}>click here.</Link>
+                  <Link className="text-link" to={ROUTES.SIGNUP}>
+                    click here.
+                  </Link>
                 </Typography>
               }
             />

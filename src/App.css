@@ -31,12 +31,12 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
-a {
+a.text-link {
   color: #ef5350;
   text-decoration: none;
 }
 
-a:hover {
+a.text-link:hover {
   color: #f80054;
   text-decoration: none;
 }

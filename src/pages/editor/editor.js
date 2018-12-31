@@ -11,7 +11,7 @@ const styles = theme => ({
     flexWrap: "wrap"
   },
   cm: {
-    fontSize: "1.1rem"
+    fontSize: theme.fontSize ? theme.fontSize : "14px"
   }
 });
 

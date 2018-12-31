@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import CSEditor from "./editor";
 import CSOutput from "./output";
 import CSSnackbar from "../../components/snackbar";
-import CSActionBar from "../../components/action-bar";
+import CSActionBar from "./action-bar";
 import { withAuthorization } from "../../components/session";
 
 import Snackbar from "@material-ui/core/Snackbar";
