@@ -4,6 +4,7 @@ import { compose } from "recompose";
 
 import { withFirebase } from "../../components/firebase";
 import CSSnackbar from "../../components/snackbar";
+import { isAuthenticated } from "../../util";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import { withStyles } from "@material-ui/core/styles";
@@ -54,12 +55,13 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       ...INITIAL_STATE,
-      showPassword: false
+      showPassword: false,
+      isLoading: false
     };
   }
 
   componentDidMount() {
-    if (localStorage.getItem("authUser")) {
+    if (isAuthenticated()) {
       this.props.history.push(ROUTES.EDITOR);
     }
   }
@@ -76,6 +78,9 @@ class LoginForm extends Component {
 
   handleSubmit = event => {
     const { email, password } = this.state;
+    this.setState({
+      isLoading: true
+    });
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
@@ -83,32 +88,15 @@ class LoginForm extends Component {
         this.props.history.push(ROUTES.EDITOR);
       })
       .catch(error => {
-        this.setState({ error: error.message });
+        this.setState({ error: error.message, isLoading: false });
       });
     event.preventDefault();
   };
 
   render() {
     const { classes } = this.props;
-    const { email, password } = this.state;
+    const { email, password, isLoading } = this.state;
     const isInvalid = password === "" || email === "";
-    const ErrorMsg = () => (
-      <Snackbar
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right"
-        }}
-        open={this.state.error && this.state.error.length > 0}
-        autoHideDuration={6000}
-        onClose={this.handleClose}
-      >
-        <CSSnackbar
-          onClose={this.handleClose}
-          variant="error"
-          message={this.state.error}
-        />
-      </Snackbar>
-    );
     return (
       <Grid
         container
@@ -182,7 +170,7 @@ class LoginForm extends Component {
                   color="secondary"
                   size="large"
                   className={classes.submitBtn}
-                  disabled={isInvalid}
+                  disabled={isInvalid || isLoading}
                   fullWidth
                 >
                   Login
@@ -190,7 +178,21 @@ class LoginForm extends Component {
               </form>
             </CardContent>
           </Card>
-          <ErrorMsg />
+          <Snackbar
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            open={this.state.error && this.state.error.length > 0}
+            autoHideDuration={6000}
+            onClose={this.handleClose}
+          >
+            <CSSnackbar
+              onClose={this.handleClose}
+              variant="error"
+              message={this.state.error}
+            />
+          </Snackbar>
         </Grid>
       </Grid>
     );

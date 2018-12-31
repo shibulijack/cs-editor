@@ -55,3 +55,7 @@ export function captureConsole() {
     }
   };
 }
+
+export function isAuthenticated() {
+  return window.localStorage && localStorage.getItem("authUser");
+}
