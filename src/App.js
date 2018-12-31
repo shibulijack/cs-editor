@@ -11,6 +11,11 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import CSAppBar from "./components/app-bar";
 import Loader from "./components/loader";
 
+const HomePage = Loadable({
+  loader: () => import("./pages/home"),
+  loading: Loader
+});
+
 const EditorPage = Loadable({
   loader: () => import("./pages/editor"),
   loading: Loader
@@ -59,6 +64,7 @@ const App = () => (
       <React.Fragment>
         <CSAppBar />
         <Route exact path={ROUTES.EDITOR} component={EditorPage} />
+        <Route exact path={ROUTES.HOME} component={HomePage} />
         <Route exact path={ROUTES.LOGIN} component={LoginPage} />
         <Route exact path={ROUTES.SIGNUP} component={SignupPage} />
       </React.Fragment>

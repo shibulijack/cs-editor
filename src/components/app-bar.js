@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import CodeIcon from "@material-ui/icons/CodeRounded";
+import InfoIcon from "@material-ui/icons/InfoRounded";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Avatar from "@material-ui/core/Avatar";
@@ -64,9 +65,14 @@ class CSAppBar extends React.Component {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     const GuestMenu = () => (
-      <Button color="inherit" component={Link} to={ROUTES.LOGIN}>
-        LOGIN
-      </Button>
+      <IconButton
+        size="small"
+        aria-label="Home"
+        component={Link}
+        to={ROUTES.HOME}
+      >
+        <InfoIcon />
+      </IconButton>
     );
     return (
       <div className={classes.root}>
