@@ -128,12 +128,15 @@ class LoginForm extends Component {
                 <TextField
                   id="email"
                   label="Email"
+                  placeholder="your.email@domain.com"
                   className={classes.textField}
                   value={this.state.email}
                   onChange={this.handleChange("email")}
                   margin="normal"
                   variant="filled"
                   fullWidth
+                  autoFocus
+                  autoComplete="email"
                 />
 
                 <TextField
@@ -146,6 +149,7 @@ class LoginForm extends Component {
                   margin="normal"
                   variant="filled"
                   fullWidth
+                  autoComplete="current-password"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment variant="filled" position="end">

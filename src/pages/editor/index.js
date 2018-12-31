@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import * as Util from "../../util";
+import { captureConsole } from "../../util";
 
 import Grid from "@material-ui/core/Grid";
 
@@ -30,7 +30,7 @@ class Editor extends Component {
   }
 
   componentDidMount() {
-    Util.captureConsole();
+    captureConsole();
     window.addEventListener("message", this.getMessage);
   }
 

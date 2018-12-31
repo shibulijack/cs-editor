@@ -138,23 +138,30 @@ class SignupForm extends Component {
                 <TextField
                   id="name"
                   label="Name"
+                  placeholder="John Doe"
                   className={classes.textField}
                   value={this.state.username}
                   onChange={this.handleChange("username")}
                   margin="normal"
                   variant="filled"
                   fullWidth
+                  autoFocus
+                  autoComplete="username"
+                  helperText="Can contain special characters"
                 />
 
                 <TextField
                   id="email"
                   label="Email"
+                  placeholder="john.doe@domain.com"
                   className={classes.textField}
                   value={this.state.email}
                   onChange={this.handleChange("email")}
                   margin="normal"
                   variant="filled"
                   fullWidth
+                  autoComplete="email"
+                  helperText="Verification email to be sent to this address"
                 />
 
                 <TextField
@@ -167,6 +174,8 @@ class SignupForm extends Component {
                   margin="normal"
                   variant="filled"
                   fullWidth
+                  autoComplete="new-password"
+                  helperText="Minimum 6 characters"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment variant="filled" position="end">

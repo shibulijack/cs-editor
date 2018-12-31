@@ -1,5 +1,5 @@
 import React from "react";
-import * as Util from "../../util";
+import { safePrint } from "../../util";
 
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -26,7 +26,7 @@ const OutputLog = props => {
           Output
         </Typography>
         <Typography variant="h5" component="h2">
-          {outputValue && Util.safePrint(outputValue.data)}
+          {outputValue && safePrint(outputValue.data)}
         </Typography>
       </CardContent>
     </Card>
