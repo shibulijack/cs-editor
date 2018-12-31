@@ -13,7 +13,7 @@ import Menu from "@material-ui/core/Menu";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 import { withFirebase } from "./firebase";
-
+import { AuthUserContext } from "./session";
 import * as ROUTES from "../constants/routes";
 
 const TRUNCATE_LIMIT = 15;
@@ -44,6 +44,7 @@ class CSAppBar extends React.Component {
     auth: true,
     anchorEl: null
   };
+  static contextType = AuthUserContext;
 
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -82,52 +83,58 @@ class CSAppBar extends React.Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               CS Editor
             </Typography>
-            {authUser ? (
-              <React.Fragment>
-                <Chip
-                  avatar={
-                    <Avatar className={classes.avatar}>
-                      {authUser.displayName
-                        ? authUser.displayName[0].toUpperCase()
-                        : authUser.email[0].toUpperCase()}
-                    </Avatar>
-                  }
-                  label={
-                    authUser.displayName
-                      ? authUser.displayName.length > TRUNCATE_LIMIT
-                        ? authUser.displayName
-                            .slice(0, TRUNCATE_LIMIT)
-                            .concat("...")
-                        : authUser.displayName
-                      : authUser.email.length > TRUNCATE_LIMIT
-                      ? authUser.email.slice(0, TRUNCATE_LIMIT).concat("...")
-                      : authUser.email
-                  }
-                  onClick={this.handleMenu}
-                  className={classes.chip}
-                  variant="outlined"
-                />
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                  }}
-                  open={open}
-                  onClose={this.handleClose}
-                >
-                  <MenuItem onClick={this.handleClose}>Dashboard</MenuItem>
-                  <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
-                </Menu>
-              </React.Fragment>
-            ) : (
-              <GuestMenu />
-            )}
+            <AuthUserContext.Consumer>
+              {authUser =>
+                authUser ? (
+                  <React.Fragment>
+                    <Chip
+                      avatar={
+                        <Avatar className={classes.avatar}>
+                          {authUser.displayName
+                            ? authUser.displayName[0].toUpperCase()
+                            : authUser.email[0].toUpperCase()}
+                        </Avatar>
+                      }
+                      label={
+                        authUser.username
+                          ? authUser.username.length > TRUNCATE_LIMIT
+                            ? authUser.username
+                                .slice(0, TRUNCATE_LIMIT)
+                                .concat("...")
+                            : authUser.username
+                          : authUser.email.length > TRUNCATE_LIMIT
+                          ? authUser.email
+                              .slice(0, TRUNCATE_LIMIT)
+                              .concat("...")
+                          : authUser.email
+                      }
+                      onClick={this.handleMenu}
+                      className={classes.chip}
+                      variant="outlined"
+                    />
+                    <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right"
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right"
+                      }}
+                      open={open}
+                      onClose={this.handleClose}
+                    >
+                      <MenuItem onClick={this.handleClose}>Dashboard</MenuItem>
+                      <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                    </Menu>
+                  </React.Fragment>
+                ) : (
+                  <GuestMenu />
+                )
+              }
+            </AuthUserContext.Consumer>
           </Toolbar>
         </AppBar>
       </div>
