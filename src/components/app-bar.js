@@ -60,7 +60,7 @@ class CSAppBar extends React.Component {
   };
 
   render() {
-    const { classes, authUser } = this.props;
+    const { classes } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     const GuestMenu = () => (

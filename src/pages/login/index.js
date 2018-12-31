@@ -58,6 +58,12 @@ class LoginForm extends Component {
     };
   }
 
+  componentDidMount() {
+    if (localStorage.getItem("authUser")) {
+      this.props.history.push(ROUTES.EDITOR);
+    }
+  }
+
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value

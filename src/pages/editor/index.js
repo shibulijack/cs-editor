@@ -7,6 +7,7 @@ import CSEditor from "./editor";
 import CSOutput from "./output";
 import CSSnackbar from "../../components/snackbar";
 import CSActionBar from "../../components/action-bar";
+import { withAuthorization } from "../../components/session";
 
 import Snackbar from "@material-ui/core/Snackbar";
 
@@ -149,5 +150,5 @@ class Editor extends Component {
     );
   }
 }
-
-export default Editor;
+// const condition = authUser => !!authUser;
+export default withAuthorization(Editor);
